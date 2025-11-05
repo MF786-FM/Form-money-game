@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Game Money - Shop</title>
+    
+<style>
+ body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #d8ffeb; /* Light forest green */
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* ===================================
+   HEADER & NAVIGATION STYLES
+   =================================== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 25px; 
+    background-color: #2c3e50; 
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: sticky; 
+    top: 0;
+    z-index: 1000;
+}
+
+.balance {
+    font-size: 1.4em;
+    display: flex;
+    gap: 30px;
+    font-weight: 700; 
+    letter-spacing: 0.5px;
+}
+
+.balance span {
+    margin-left: 0; 
+}
+
+/* Menu Button */
+.menu-btn {
+    background: none; 
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 30px;
+}
+
+.menu-btn div {
+    width: 100%;
+    height: 4px; 
+    background-color: white;
+    border-radius: 2px;
+}
+
+/* Dropdown Menu Styling (For Header Menu) */
+.dropdown {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left; 
+    border-radius: 5px;
+}
+
+.dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.2s;
+}
+/* Flying Item Class */
+.flying-item {
+    font-size: 16px;
+    font-weight: bold;
+    color: white; /* متن کا رنگ */
+    text-shadow: 1px 1px 2px black;
+    pointer-events: none; /* تاکہ کلک کرنے میں رکاوٹ نہ ہو */
+    white-space: nowrap; /* تاکہ ایک لائن میں رہے */
+    opacity: 1;
+    transform: translateY(0);
+    transition: none; /* جاوا سکرپٹ کی طرف سے کنٹرول */
+}
+
+/* Keyframes for the animation */
+@keyframes flyUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50px); /* 50px اوپر جائے */
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-80px); /* اور زیادہ اوپر جا کر غائب ہو جائے */
+    }
+}
+
+.dropdown button:hover {
+    background-color: #e9e9e9;
+}
+body {
+/* ========================================================== */
+/* 🛑 NEW PROFESSIONAL SHOP/EXCHANGE/NFT BUTTON STYLES (Specificity Fix) */
+/* ========================================================== */
+
+/* تمام بائی، سیل، اور ایکسچینج بٹنوں کے لیے بیس سٹائل */
+.shop-section .item-row button, 
+.exchange-area button, 
+.nft-card button {
+    /* سائز اور پیڈنگ کو بڑھائیں */
+    padding: 10px 20px !important; 
+    font-size: 16px !important;     
+    font-weight: bold;
+    
+    /* گول کناروں کے لیے */
+    border-radius: 8px;
+    border: none;
+    
+    /* کرسر کو پوائنٹر پر سیٹ کریں */
+    cursor: pointer;
+    
+    /* ہلکا سایہ شامل کریں تاکہ بٹن تھری ڈی لگے */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* ٹرانزیشن شامل کریں تاکہ ہوور کرنے پر ہموار اثر آئے */
+    transition: all 0.2s ease;
+    
+    /* چوڑائی کو سیٹ کریں */
+    width: auto; 
+    min-width: 100px !important; 
+    margin: 5px; /* آس پاس مارجن دیں */
+}
+.shop-item button, 
+.exchange-area button, 
+.nft-card button {
+    /* سائز اور پیڈنگ کو بڑھائیں */
+    padding: 10px 20px;
+    font-size: 16px; /* فونٹ سائز مناسب رکھیں */
+    font-weight: bold;
+    
+    /* گول کناروں کے لیے */
+    border-radius: 8px;
+    border: none;
+    
+    /* کرسر کو پوائنٹر پر سیٹ کریں */
+    cursor: pointer;
+    
+    /* ہلکا سایہ شامل کریں تاکہ بٹن تھری ڈی لگے */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* ٹرانزیشن شامل کریں تاکہ ہوور کرنے پر ہموار اثر آئے */
+    transition: all 0.2s ease;
+    
+    /* چوڑائی کو خودکار طور پر مواد کے حساب سے سیٹ کریں */
+    width: auto; 
+    min-width: 100px; /* کم از کم چوڑائی مقرر کریں */
+    margin: 5px; /* آس پاس مارجن دیں */
+}
+
+/* ہوور ایفیکٹ: ماؤس لانے پر تھوڑا اوپر اٹھنا */
+.shop-item button:hover, 
+.exchange-area button:hover,
+.nft-card button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Buy بٹن کے لیے رنگ */
+.shop-item button.buy-btn, 
+.exchange-area button.buy-btn,
+.nft-card button.buy-btn {
+    background-color: #4CAF50; /* سبز رنگ */
+    color: white;
+}
+
+/* Sell/Exchange بٹن کے لیے رنگ */
+.shop-item button.sell-btn, 
+.exchange-area button.sell-btn {
+    background-color: #f44336; /* سرخ رنگ */
+    color: white;
+}
+
+/* Exchange بٹن (Exchange پیج کے بیچ میں) */
+.exchange-area button.exchange-action-btn {
+    background-color: #2196F3; /* نیلا رنگ */
+    color: white;
+    padding: 12px 25px; /* مزید پیڈنگ دیں */
+}
+/* اپنی CSS فائل میں موجودہ .popup کلاس کو اس سے تبدیل کریں یا اس میں اضافہ کریں */
+.popup {
+    /* اس پوزیشننگ سے پاپ اپ اسکرین پر فکس ہو جائے گا */
+    position: fixed; 
+    
+    /* اسے پوری اسکرین پر مرکز میں لانے کے لیے */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* یہ یقینی بناتا ہے کہ یہ تمام عناصر کے اوپر نظر آئے (زیادہ ویلیو بہتر ہے) */
+    z-index: 1000; 
+    
+    /* پس منظر کا رنگ (تاکہ نیچے کا مواد نظر نہ آئے) */
+    background-color: white; 
+    
+    /* پاپ اپ کا سائز اور پیڈنگ */
+    padding: 20px;
+    border: 3px solid #333;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5); /* پاپ اپ کے گرد سایہ */
+    
+    /* آپ کے مواد کے مطابق زیادہ سے زیادہ چوڑائی */
+    max-width: 90%; 
+    max-height: 90%;
+    overflow-y: auto; /* اگر مواد زیادہ ہو تو سکولنگ کی اجازت دے */
+}
+
+/* غیر فعال (Disabled) بٹنوں کے لیے سٹائل */
+.shop-item button:disabled, 
+.exchange-area button:disabled,
+.nft-card button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+</style>
+
+</head>
+<body>
+
+    <div class="header">
+        <div class="balance">
+            <span id="coinsEl">0 💰 Coins</span>
+            <span id="fgmEl">0 FGM 💎</span>
+        </div>
+        
+        <button class="menu-btn" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+             <audio id="soundCoin" src="sounds/coin.mp3" preload="auto"></audio>
+<audio id="soundHarvest" src="sounds/harvest.mp3" preload="auto"></audio>
+<audio id="soundChop" src="sounds/chop.mp3" preload="auto"></audio>
+
+<audio id="soundWatering" src="sounds/watering.mp3" preload="auto"></audio>
+<audio id="soundUpgrade" src="sounds/upgrade.mp3" preload="auto"></audio>
+<audio id="soundMusic" src="sounds/music.mp3" preload="auto" loop></audio> 
+<audio id="soundAlert" src="sounds/alert.mp3" preload="auto"></audio>
+<audio id="soundSeedPlant" src="sounds/seedplant.mp3" preload="auto"></audio> 
+
+        <div id="menuDropdown" class="dropdown" style="display: none;">
+            <button onclick="navigatePage('index.html')">1. Main Farm</button>
+            <button onclick="navigatePage('tree_farm.html')">2. Tree Farm</button>
+            <button onclick="navigatePage('shop.html')">3. Shop</button> 
+            <button onclick="navigatePage('nft_shop.html')">4. NFT Shop</button>
+            <button onclick="navigatePage('leaderboard.html')">5. Leaderboard</button>
+            <button onclick="toggleInventory()">6. Inventory</button>
+            <button onclick="navigatePage('exchange.html')">7. Exchange</button>
+        </div>
+    </div>
+    
+    <h2 style="margin-top: 20px;">The Village Shop</h2>
+    
+    <div id="inventoryPopup" class="popup" style="display: none;">
+        <h2>My Inventory 🎒</h2>
+        
+        <div class="inventory-section currency-status">
+            <h3>Currencies & Status</h3>
+            <p><span id="coinsElInventory">0 💰 Coins</span></p> 
+            <p><span id="fgmElInventory">0 FGM 💎</span></p>
+        </div>
+
+        <div class="inventory-section item-table">
+            <h3>Items: Seeds & Crops</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Seeds 🌱</th>
+                        <th>Crops/Wood 📦</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="inventory-section item-table">
+            <h3>Tools & NFTs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Normal (Uses Left)</th>
+                        <th>NFT (Uses Left)</th>
+                    </tr>
+                </thead>
+                <tbody id="toolTableBody">
+                </tbody>
+            </table>
+        </div>
+
+        <button onclick="toggleInventory()" class="close-btn">Close</button>
+    </div>
+
+    <div class="shop-grid" style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+        gap: 20px;
+        max-width: 1200px;
+        margin: 20px auto; 
+        padding: 0 20px;
+        text-align: center;
+    ">
+        
+        <div class="shop-section" style="
+            border: 2px solid #4CAF50; 
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f9fff9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        ">
+            <h3>🌱 Buy Seeds (Coins)</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px;">
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Wheat Seed</div>
+                        <div class="item-action">
+                            <p>5 💰</p>
+                            <button class="buy-btn" onclick="showQuantityPopup('wheat', 'buy')">Buy</button>
+                        </div>
+                    </div>
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Corn Seed</div>
+                        <div class="item-action">
+                            <p>10 💰</p>
+                            <button class="buy-btn" onclick="showQuantityPopup('corn', 'buy')">Buy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card shop-item" style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <div class="item-info">Tree Seed</div>
+                    <div class="item-action">
+                        <p>10 💰</p>
+                        <button class="buy-btn" onclick="showQuantityPopup('tree', 'buy')">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="shop-section" style="
+            border: 2px solid #2980b9; 
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #f7fbff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        ">
+            <h3>🔨 Buy Normal Tools (Coins)</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px;">
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Watering Can 💧</div>
+                        <div class="item-action">
+                            <p>50 💰</p>
+                            <button class="buy-btn" onclick="showQuantityPopup('wateringCan', 'buyTool')">Buy</button>
+                        </div>
+                    </div>
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Scissors ✂️</div>
+                        <div class="item-action">
+                            <p>50 💰</p>
+                            <button class="buy-btn" onclick="showQuantityPopup('scissors', 'buyTool')">Buy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card shop-item" style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <div class="item-info">Axe 🪓</div>
+                    <div class="item-action">
+                        <p>50 💰</p>
+                        <button class="buy-btn" onclick="showQuantityPopup('axe', 'buyTool')">Buy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-section" style="
+            border: 2px solid #f39c12; 
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #fffdf7;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        ">
+            <h3>💰 Sell to Coins</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px;">
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Wheat Crop (<span id="cropWheatCount">0</span>)</div>
+                        <div class="item-action">
+                            <p>10 💰</p>
+                            <button class="sell-btn" onclick="showQuantityPopup('wheat', 'sellCoins')">Sell to Coins</button>
+                        </div>
+                    </div>
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Corn Crop (<span id="cropCornCount">0</span>)</div>
+                        <div class="item-action">
+                            <p>18
+                                💰</p>
+                            <button class="sell-btn" onclick="showQuantityPopup('corn', 'sellCoins')">Sell to Coins</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card shop-item" style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <div class="item-info">Wood (<span id="cropWoodCount">0</span>)</div>
+                    <div class="item-action">
+                        <p>5 💰</p>
+                        <button class="sell-btn" onclick="showQuantityPopup('wood', 'sellCoins')">Sell to Coins</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="shop-section" style="
+            border: 2px solid #9b59b6; 
+            border-radius: 10px;
+            padding: 15px;
+            background-color: #fdf7ff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        ">
+            <h3>💎 Sell to FGM</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; gap: 10px;">
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Wheat (1 = 0.01 💎)</div>
+                        <div class="item-action">
+                            
+                            <button class="sell-btn fgm-sell-btn" onclick="showQuantityPopup('wheat', 'sellFGM')">Sell to FGM</button>
+                        </div>
+                    </div>
+                    <div class="item-card shop-item" style="flex: 1; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                        <div class="item-info">Corn (1 = 0.02 💎)</div>
+                        <div class="item-action">
+                           
+                            <button class="sell-btn fgm-sell-btn" onclick="showQuantityPopup('corn', 'sellFGM')">Sell to FGM</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card shop-item" style="border: 1px solid #ddd; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                    <div class="item-info">Wood (1 = 0.005 💎)</div>
+                    <div class="item-action">
+                
+                        <button class="sell-btn fgm-sell-btn" onclick="showQuantityPopup('wood', 'sellFGM')">Sell to FGM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div> <script src="game.js"></script> 
+</body>
+
+</html>

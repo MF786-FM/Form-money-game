@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Game Money - Tree Farm</title>
+    
+<style>
+    /* 🛑 نوٹ: میں نے وہی CSS شامل کر دی ہے جو ہم نے مل کر ٹھیک کی تھی،
+       تاکہ Popups اسکرین کے بیچ میں نظر آئیں اور لے آؤٹ ٹھیک رہے۔ */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #d8ffeb;
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 25px; 
+        background-color: #2c3e50; 
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        position: sticky; 
+        top: 0;
+        z-index: 1000;
+    }
+
+    .balance {
+        font-size: 1.4em;
+        display: flex;
+        gap: 30px;
+        font-weight: 700; 
+        letter-spacing: 0.5px;
+    }
+
+    .balance span {
+        margin-left: 0; 
+    }
+            
+    .menu-btn {
+        background: none; 
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 30px;
+    }
+
+    .menu-btn div {
+        width: 100%;
+        height: 4px; 
+        background-color: white;
+        border-radius: 2px;
+    }
+
+    .dropdown {
+        position: absolute;
+        top: 50px;
+        right: 10px;
+        background-color: white;
+        border: 1px solid #ccc;
+        z-index: 1000;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: left; 
+        border-radius: 5px;
+    }
+
+    .dropdown button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 5px;
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        border-radius: 3px;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown button:hover {
+        background-color: #e9e9e9;
+    }
+    
+    .farm-container {
+        margin: 20px auto;
+        padding: 15px;
+        border: 3px solid #006400;
+        background-color: #b7e4c7;
+        width: fit-content;
+        display: grid;
+        grid-template-columns: repeat(5, 70px);
+        gap: 8px;
+        border-radius: 8px;
+    }
+    
+    .plot {
+        width: 70px;
+        height: 70px;
+        background-color: #4a6c47;
+        border: 1px solid #2e4a2b;
+        line-height: 70px;
+        font-size: 2.5em;
+        cursor: pointer;
+        position: relative;
+        user-select: none;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: background-color 0.1s;
+    }
+
+    .timer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        font-size: 0.3em;
+        line-height: 1.2;
+        padding: 2px 0;
+        pointer-events: none; 
+    }
+
+    .upgrade-section {
+        margin: 20px;
+        padding: 15px;
+        border: 1px solid #2ecc71;
+        border-radius: 5px;
+        background-color: #ffffff;
+        width: 350px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .seed-selector-section {
+        padding: 15px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+    }
+    
+    .seed-selector-section button {
+        padding: 8px 15px;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #1abc9c;
+        color: white;
+    }
+    .tool-selection-container {
+    background-color: #f0f0f0; /* ہلکا پس منظر */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.tool-selection-container h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 1.1em;
+}
+
+/* منتخب ٹول کا مرکزی ڈسپلے باکس */
+.tool-display-box {
+    background-color: #ffffff;
+    border: 2px solid #5cb85c; /* سبز رنگ کی نمایاں بارڈر */
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #3c763d; /* گہرا سبز ٹیکسٹ */
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block; /* باکس کو مواد کے سائز کے مطابق رکھیں */
+}
+
+/* آئیکن بٹنوں کا گروپ */
+.tool-icon-buttons {
+    display: flex; /* بٹنوں کو ایک لائن میں رکھیں */
+    justify-content: center;
+    gap: 10px; /* بٹنوں کے درمیان فاصلہ */
+}
+
+/* آئیکن بٹنوں کا انداز */
+.tool-icon-btn {
+    font-size: 1.5em; /* آئیکن سائز */
+    padding: 8px 12px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    background-color: #eee;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1; /* آئیکن کو مرکز میں رکھنے کے لیے */
+}
+
+/* ہوور اسٹیٹ (جب ماؤس بٹن پر جائے) */
+.tool-icon-btn:hover {
+    background-color: #ddd;
+    border-color: #999;
+}
+
+/* 🛑 منتخب (SELECTED) ٹول کو نمایاں کریں */
+.tool-icon-btn.selected {
+    background-color: #5cb85c; /* گہرا سبز پس منظر */
+    color: #fff; /* سفید آئیکن */
+    border-color: #3c763d;
+    box-shadow: 0 0 10px rgba(92, 184, 92, 0.6); /* ہلکا شیڈو تاکہ زیادہ نمایاں ہو */
+    transform: translateY(-2px); /* تھوڑا اوپر اٹھا ہوا */
+}
+
+/* 1. پوزیشننگ کے لیے ضروری کلاسز (ضرورت کے مطابق اپنی کلاسز میں شامل کریں) */
+.plot,
+.item-card {
+    /* آپ کے باقی اسٹائلز */
+    position: relative; /* 👈 یہ لازمی ہے تاکہ آئیکن اس کے لحاظ سے حرکت کرے */
+    overflow: visible;  /* 👈 تاکہ اڑتا ہوا آئیکن باکس کے باہر نظر آئے */
+}
+
+/* 2. فلائنگ آئٹم کی بنیادی خصوصیات */
+.flying-item {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    pointer-events: none; /* ماؤس ایونٹس کو نظر انداز کرے */
+    white-space: nowrap;
+    opacity: 1;
+    /* absolute پوزیشننگ پہلے ہی جاوا سکرپٹ میں سیٹ ہے */
+    /* ٹرانسفارم کو شروع میں سیٹ کرنے کی ضرورت نہیں کیونکہ یہ keyframes میں ہے */
+}
+
+/* 3. اینیمیشن کی حرکت (Keyframes) */
+@keyframes flyUp {
+    0% {
+        opacity: 1;
+        /* -50% ہورزنٹل ٹرانسلیشن کو مرکز میں لانے کے لیے (جاوا سکرپٹ کے left: 50% کے ساتھ) */
+        transform: translate(-50%, 0); 
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50px); /* 50px اوپر جائے */
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -80px); /* 80px اوپر جا کر غائب ہو جائے */
+    }
+}
+
+
+    /* ========================================================== */
+    /* Inventory and other fixed Popups Styling */
+    /* ========================================================== */
+    .popup {
+        position: fixed; 
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); 
+        
+        background-color: white;
+        border: 2px solid #2ecc71;
+        z-index: 2000; 
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        width: 90%;
+        max-width: 500px; 
+        border-radius: 10px;
+        text-align: left;
+        max-height: 90vh; 
+        overflow-y: auto;
+    }
+
+    .inventory-section {
+        margin-top: 15px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+
+    .inventory-section table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 8px;
+    }
+
+    .inventory-section th, .inventory-section td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+        font-size: 0.9em;
+    }
+
+    .close-btn {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        transition: background-color 0.2s;
+    }
+    .close-btn:hover {
+        background-color: #c0392b;
+    }
+</style>
+
+</head>
+<body>
+
+    <div class="header">
+        <div class="balance">
+            <span id="coinsEl">0 💰 Coins</span>
+            <span id="fgmEl">0 FGM 💎</span>
+        </div>
+        
+        <button class="menu-btn" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+             <audio id="soundCoin" src="sounds/coin.mp3" preload="auto"></audio>
+<audio id="soundHarvest" src="sounds/harvest.mp3" preload="auto"></audio>
+<audio id="soundChop" src="sounds/chop.mp3" preload="auto"></audio>
+
+<audio id="soundWatering" src="sounds/watering.mp3" preload="auto"></audio>
+<audio id="soundUpgrade" src="sounds/upgrade.mp3" preload="auto"></audio>
+<audio id="soundMusic" src="sounds/music.mp3" preload="auto" loop></audio> 
+<audio id="soundAlert" src="sounds/alert.mp3" preload="auto"></audio>
+<audio id="soundSeedPlant" src="sounds/seedplant.mp3" preload="auto"></audio> 
+
+        <div id="menuDropdown" class="dropdown" style="display: none;">
+            <button onclick="navigatePage('index.html')">1. Main Farm</button>
+            <button onclick="navigatePage('tree_farm.html')">2. Tree Farm</button>
+            <button onclick="navigatePage('shop.html')">3. Shop</button> 
+            <button onclick="navigatePage('nft_shop.html')">4. NFT Shop</button>
+            <button onclick="navigatePage('leaderboard.html')">5. Leaderboard</button>
+            <button onclick="toggleInventory()">6. Inventory</button>
+            <button onclick="navigatePage('exchange.html')">7. Exchange</button>
+        </div>
+    </div>
+    
+    <div class="seed-selector-section">
+        <h3>Select Seed: <span id="currentSeedDisplay">Tree</span></h3>
+        <button onclick="selectSeed('tree')">Tree 🌲</button> 
+    </div>
+<div class="tool-selection-container">
+    <h3>🛠️ Current Tool:</h3>
+    
+    <div id="currentToolDisplay" class="tool-display-box">
+        Hand 🖐️
+    </div>
+
+    <div class="tool-icon-buttons">
+        <button onclick="selectTool('hand')" class="tool-icon-btn" data-tool="Hand" id="handBtn">
+            🖐️
+        </button>
+        <button onclick="selectTool('scissors')" class="tool-icon-btn" data-tool="Scissors" id="scissorsBtn">
+            ✂️
+        </button>
+        <button onclick="selectTool('wateringCan')" class="tool-icon-btn" data-tool="WateringCan" id="wateringCanBtn">
+            💧
+        </button>
+        <button onclick="selectTool('axe')" class="tool-icon-btn" data-tool="Axe" id="axeBtn">
+            🪓
+        </button>
+    </div>
+</div>
+    <div class="upgrade-section">
+        <h3>Tree Farm Upgrade</h3>
+        <p>Current Soil: <span id="treeSoilCount">3</span> / 75</p>
+        <p>Next Upgrade: +2 Soil for 5 FGM 💎</p>
+        <button id="treeUpgradeBtn" onclick="upgradeTreeFarm()">Upgrade Tree Farm</button>
+    </div>
+    
+    <h2 style="margin-top: 20px;">Tree Farm Plots (Tree Seeds Only)</h2>
+    <div id="treeDiv" class="farm-container">
+        </div>
+
+    <div id="inventoryPopup" class="popup" style="display: none;">
+        <h2>My Inventory 🎒</h2>
+        
+        <div class="inventory-section currency-status">
+            <h3>Currencies & Status</h3>
+            <p><span id="coinsElInventory">0 💰 Coins</span></p> 
+            <p><span id="fgmElInventory">0 FGM 💎</span></p>
+        </div>
+
+        <div class="inventory-section item-table">
+            <h3>Items: Seeds & Crops</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Seeds 🌱</th>
+                        <th>Crops/Wood 📦</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="inventory-section item-table">
+            <h3>Tools & NFTs</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Normal (Uses Left)</th>
+                        <th>NFT (Uses Left)</th>
+                    </tr>
+                </thead>
+                <tbody id="toolTableBody">
+                     </tbody>
+            </table>
+        </div>
+
+        <button onclick="toggleInventory()" class="close-btn">Close</button>
+    </div>
+    
+    <div id="shopPopup" class="dropdown" style="display: none;"></div>
+    <div id="leaderboardPopup" class="dropdown" style="display: none;"></div>
+
+    <script src="game.js"></script>
+</body>
+</html>
