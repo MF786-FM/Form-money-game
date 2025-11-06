@@ -1,0 +1,28 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # یا master، اگر آپ اس برانچ کا استعمال کر رہے ہیں
+
+  # Manual run for testing
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './' # آپ کی فائلیں root میں ہیں
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
