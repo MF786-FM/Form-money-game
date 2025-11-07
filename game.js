@@ -138,25 +138,6 @@ function updateUI() {
     // 🛑 نئی تبدیلی: شاپ میں فصلوں کی مقدار کو اپ ڈیٹ کریں
     updateSellCounts(); 
 }
-// NEW: Planting handler to force UI update immediately
-function handlePlanting(index, type) {
-    let success = false;
-    
-    if (type === 'farm') {
-        // یہ آپ کے موجودہ plantFarmSeed فنکشن کو کال کرے گا
-        plantFarmSeed(index); 
-        success = true; 
-    } else {
-        // یہ آپ کے موجودہ plantTreeSeed فنکشن کو کال کرے گا
-        plantTreeSeed(index);
-        success = true; 
-    }
-    
-    if (success) {
-        // 🛑 اہم: یہ وہ لائن ہے جو تبدیلی کو فوراً دکھائے گی
-        updateUI(); 
-    }
-}
 
 // -------------------------------------------------------------
 
@@ -530,6 +511,25 @@ function initializePlots() {
                 readyTime: 0
             });  
         }  
+    }
+}
+// NEW: Planting handler to force UI update immediately
+function handlePlanting(index, type) {
+    let success = false;
+    
+    if (type === 'farm') {
+        // یہ آپ کے موجودہ plantFarmSeed فنکشن کو کال کرے گا
+        plantFarmSeed(index); 
+        success = true; 
+    } else {
+        // یہ آپ کے موجودہ plantTreeSeed فنکشن کو کال کرے گا
+        plantTreeSeed(index);
+        success = true; 
+    }
+    
+    if (success) {
+        // 🛑 اہم: یہ وہ لائن ہے جو تبدیلی کو فوراً دکھائے گی
+        updateUI(); 
     }
 }
 function createPlots(container, plots, type) {
