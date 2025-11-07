@@ -83,7 +83,7 @@ function consumeTool(toolType, isNFT) {
         } else if (normalTools[toolType] > 0) {
             normalTools[toolType]--;
             normalToolUses[toolType] = 2; // 3 سے شروع ہو کر 1 استعمال ہو چکا، 2 باقی
-            return { success: true, message: `Used new ${toolType}. 2 uses left.` }; 
+            return { success: true, message: `Used new ${toolType}. 25 uses left.` }; 
         } else {
             return { success: false, message: `No uses left for ${toolType} and no spare tools.` };
         }
