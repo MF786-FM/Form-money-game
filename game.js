@@ -138,6 +138,28 @@ function updateUI() {
     // 🛑 نئی تبدیلی: شاپ میں فصلوں کی مقدار کو اپ ڈیٹ کریں
     updateSellCounts(); 
 }
+// NEW: Planting handler to force UI update immediately
+function handlePlanting(index, type) {
+    let success = false;
+    
+    if (type === 'farm') {
+        // یہ آپ کے موجودہ plantFarmSeed فنکشن کو کال کرے گا
+        plantFarmSeed(index); 
+        success = true; 
+    } else {
+        // یہ آپ کے موجودہ plantTreeSeed فنکشن کو کال کرے گا
+        plantTreeSeed(index);
+        success = true; 
+    }
+    
+    if (success) {
+        // 🛑 اہم: یہ وہ لائن ہے جو تبدیلی کو فوراً دکھائے گی
+        updateUI(); 
+    }
+}
+
+// -------------------------------------------------------------
+
 // ==========================================================
 // UPDATED: updateToolSelectionUI() 
 // (Includes Hand tool, Highlight, and Uses Display)
@@ -424,34 +446,36 @@ function loadGame() {
 // UPDATED: MUSIC TOGGLE FUNCTION
 // ==========================================================
 
-let isMusicPlaying = false; 
+let bgmAudio = null; 
+let isMusicPlaying = false;
+let bgmSource = 'sounds/farm_bgm.mp3'; // یہاں آپ کی BG Muzik File کا نام ڈالیں
 
 function toggleMusic() {
-    const backgroundMusic = document.getElementById('soundMusic');
-    const musicBtn = document.getElementById('musicBtn');
+    if (bgmAudio === null) {
+        // 1. پہلی بار، آڈیو آبجیکٹ بنائیں (یوزر کے کلک کے بعد)
+        bgmAudio = new Audio(bgmSource); 
+        bgmAudio.loop = true;
+    }
     
-    if (!backgroundMusic) return;
-
     if (isMusicPlaying) {
-        // بند کر دیں
-        backgroundMusic.pause();
-        musicBtn.textContent = '🎵 Music OFF';
+        bgmAudio.pause();
         isMusicPlaying = false;
-        
-        // 🛑 اسٹیٹ کو LocalStorage میں محفوظ کریں
-        localStorage.setItem('gameMusicState', 'OFF'); 
+        // آپ یہاں بٹن کا ٹیکسٹ یا آئیکن بدل سکتے ہیں
+        console.log("Music Paused.");
     } else {
-        // چلائیں
-        backgroundMusic.volume = 0.3;
-        // آٹو پلے ایرر کو یہاں نظر انداز کریں کیونکہ یہ یوزر کے کلک پر کال ہو رہا ہے
-        backgroundMusic.play().catch(e => console.error("Music play failed:", e)); 
-        musicBtn.textContent = '🔊 Music ON';
+        // 2. یوزر کے کلک پر میوزک چلائیں (براؤزر کی اجازت سے)
+        bgmAudio.play().catch(error => {
+            console.error("Music playback failed (Autoplay Blocked):", error);
+            // یہ alert صرف اس صورت میں آئے گا جب کوئی نایاب ایرر ہو
+            alert("Music cannot be played. Check console for details.");
+        });
         isMusicPlaying = true;
-        
-        // 🛑 اسٹیٹ کو LocalStorage میں محفوظ کریں
-        localStorage.setItem('gameMusicState', 'ON');
+        // آپ یہاں بٹن کا ٹیکسٹ یا آئیکن بدل سکتے ہیں
+        console.log("Music Playing.");
     }
 }
+
+
 // ==========================================================
 // NEW: FUNCTION TO RESUME MUSIC ON NEW PAGE LOAD
 // ==========================================================
@@ -602,19 +626,17 @@ function createPlots(container, plots, type) {
             plotEl.onclick = () => {
                 if (selectedTool === 'hand') {
                     if (type === 'farm') {
-                        plantFarmSeed(index);
+                        // 🛑 اب یہ نیا ہینڈلر کال ہوگا جو UI کو اپ ڈیٹ کرے گا
+                        handlePlanting(index, type); 
                     } else {
-                        plantTreeSeed(index);
+                        handlePlanting(index, type);
                     }
                 } else {
                     alert(`You must select your Hand to plant seeds! Current tool: ${selectedTool}`);
                 }
             };
-        }  
+        } 
         
-        container.appendChild(plotEl);  
-    });
-}
 // ==========================================================
 // 5. CORE GAME LOGIC
 // ==========================================================
@@ -638,7 +660,24 @@ function updateToolDisplay() {
     if (!toolDisplay) return;
 
     let displayIcon = '';
-    let displayName = selectedTool.charAt(0).toUpperCase() + selectedTool.slice(1);
+    let displ        // 3. Empty State
+        else {   
+            plotEl.textContent = ' 🟫'; 
+            
+            plotEl.onclick = () => {
+                if (selectedTool === 'hand') {
+                    if (type === 'farm') {
+                        // 🛑 اب یہ نیا ہینڈلر کال ہوگا جو UI کو اپ ڈیٹ کرے گا
+                        handlePlanting(index, type); 
+                    } else {
+                        handlePlanting(index, type);
+                    }
+                } else {
+                    alert(`You must select your Hand to plant seeds! Current tool: ${selectedTool}`);
+                }
+            };
+        } 
+ayName = selectedTool.charAt(0).toUpperCase() + selectedTool.slice(1);
 
     switch (selectedTool) {
         case 'hand':
