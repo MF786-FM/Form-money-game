@@ -636,6 +636,11 @@ function createPlots(container, plots, type) {
                 }
             };
         } 
+
+        
+        container.appendChild(plotEl);  
+    });
+}
         
 // ==========================================================
 // 5. CORE GAME LOGIC
