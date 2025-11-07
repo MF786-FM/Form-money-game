@@ -447,6 +447,34 @@ function loadGame() {
 // ==========================================================
 
 let bgmAudio = null; 
+
+// ==========================================================
+// NEW: FUNCTION TO RESUME MUSIC ON NEW PAGE LOAD
+// ==========================================================
+
+function checkAndResumeMusic() {
+    const state = localStorage.getItem('gameMusicState');
+    const backgroundMusic = document.getElementById('soundMusic');
+    const musicBtn = document.getElementById('musicBtn');
+
+    if (state === 'ON' && backgroundMusic) {
+        // پچھلے پیج پر ON تھا، اس لیے یہاں بھی چلائیں
+        backgroundMusic.volume = 0.3;
+        backgroundMusic.play().catch(e => {
+            // آٹو پلے کی کوشش، یوزر کلک کا انتظار کر سکتا ہے
+            console.log("Attempted to resume music.");
+        });
+        
+        // UI اسٹیٹ کو اپ ڈیٹ کریں
+        if (musicBtn) musicBtn.textContent = '🔊 Music ON';
+        isMusicPlaying = true;
+    } else if (musicBtn) {
+        // اگر آف تھا یا پہلی بار ہے
+        musicBtn.textContent = '🎵 Music OFF';
+        isMusicPlaying = false;
+    }
+}
+    let bgmAudio = null; 
 let isMusicPlaying = false;
 let bgmSource = 'sounds/farm_bgm.mp3'; // یہاں آپ کی BG Muzik File کا نام ڈالیں
 
@@ -473,30 +501,7 @@ function toggleMusic() {
         // آپ یہاں بٹن کا ٹیکسٹ یا آئیکن بدل سکتے ہیں
         console.log("Music Playing.");
     }
-}
-
-
-// ==========================================================
-// NEW: FUNCTION TO RESUME MUSIC ON NEW PAGE LOAD
-// ==========================================================
-
-function checkAndResumeMusic() {
-    const state = localStorage.getItem('gameMusicState');
-    const backgroundMusic = document.getElementById('soundMusic');
-    const musicBtn = document.getElementById('musicBtn');
-
-    if (state === 'ON' && backgroundMusic) {
-        // پچھلے پیج پر ON تھا، اس لیے یہاں بھی چلائیں
-        backgroundMusic.volume = 0.3;
-        backgroundMusic.play().catch(e => {
-            // آٹو پلے کی کوشش، یوزر کلک کا انتظار کر سکتا ہے
-            console.log("Attempted to resume music.");
-        });
-        
-        // UI اسٹیٹ کو اپ ڈیٹ کریں
-        if (musicBtn) musicBtn.textContent = '🔊 Music ON';
-        isMusicPlaying = true;
-    } else if (musicBtn) {
+}} else if (musicBtn) {
         // اگر آف تھا یا پہلی بار ہے
         musicBtn.textContent = '🎵 Music OFF';
         isMusicPlaying = false;
